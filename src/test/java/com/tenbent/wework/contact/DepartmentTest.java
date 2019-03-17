@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DepartmentTest {
     Department department;
+    String random=String.valueOf(System.currentTimeMillis());
 
     @BeforeEach
     void setUp() {
@@ -24,19 +25,19 @@ class DepartmentTest {
 
     @Test
     void create() {
-        department.create("Test_01", 2).then().body("errcode", equalTo(0));
-        department.create("Test_01", 2).then().body("errcode", equalTo(60008));
+        department.create("Test_01"+random, 2).then().body("errcode", equalTo(0));
+        department.create("Test_01"+random, 2).then().body("errcode", equalTo(60008));
     }
 
     @Test
     void createWithChinese() {
-        department.create("测试001", 2).then().body("errcode", equalTo(0));
+        department.create("测试"+random, 2).then().body("errcode", equalTo(0));
     }
 
     @Test
     void update() {
-        int id = department.create("Update_Test", 2).then().extract().body().path("id");
-        department.update(id, "Test_update_02", 2).then().body("errmsg", equalTo("updated"));
+        int id = department.create("Update_Test"+random, 2).then().extract().body().path("id");
+        department.update(id, "Test_update_02"+random, 2).then().body("errmsg", equalTo("updated"));
     }
 
     @Test
