@@ -1,3 +1,5 @@
+package com.tenbent.wework;
+
 public class WeworkConfig {
     public String agentId="1000002";
     public String secret="Qu6ja5nw_qqAJhY3zLqUxEPVbdGD0y0AtwWu8OMwVTA";
