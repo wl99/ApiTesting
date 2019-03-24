@@ -27,7 +27,7 @@ class UserTest {
     @ValueSource(strings = { "sevenriby_", "hogwarts_", "testerhome_"})
     void create(String name) {
         String nameNew=name+user.random;
-        String random=user.random.substring(5, 5+8);
+        String random=String.valueOf(System.currentTimeMillis()).substring(5, 5+8);
         HashMap<String, Object> map=new HashMap<>();
         map.put("userid", nameNew);
         map.put("name", nameNew);

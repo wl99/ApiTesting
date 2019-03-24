@@ -5,53 +5,37 @@ import com.tenbent.wework.Wework;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
+import java.util.HashMap;
+
 import static io.restassured.RestAssured.given;
 
 public class Department extends Contact{
     public Response list(String id) {
-        reset();
-        return requestSpecification
-                .param("id", id)
-                .when().get("https://qyapi.weixin.qq.com/cgi-bin/department/list")
-                .then().log().all().statusCode(200).extract().response();
+        HashMap<String, Object> map=new HashMap<String, Object>();
+        map.put("id", id);
+        return templateFromYaml("/api/list.yaml",map);
     }
 
     public Response create(String name, int parentid) {
-        reset();
-        String body = JsonPath.parse(this.getClass().getResourceAsStream("/data/create.json")).
-                set("$.name", name).set("$.parentid", parentid).jsonString();
-
-        return requestSpecification.
-                body(body).
-                when().
-                post("https://qyapi.weixin.qq.com/cgi-bin/department/create").
-                then().log().all().
-                extract().response();
+        HashMap<String, Object> map=new HashMap<>();
+        map.put("_file", "/data/create.json");
+        map.put("name", name);
+        map.put("parentid", parentid);
+        return templateFromYaml("/api/create.yaml",map);
     }
 
     public Response update(int id, String name, int parentid) {
-        reset();
-        String body = JsonPath.parse(this.getClass().getResourceAsStream("/data/update.json")).
-                set("$.id", id).
-                set("$.name", name).
-                set("$.parentid", parentid).jsonString();
-
-        return requestSpecification.
-                    queryParam("access_token", Wework.getToken()).
-                    body(body).
-                when().
-                    post("https://qyapi.weixin.qq.com/cgi-bin/department/update").
-                then().log().all().
-                    extract().response();
+        HashMap<String, Object> map=new HashMap<>();
+        map.put("_file", "/data/update.json");
+        map.put("id", id);
+        map.put("name",name);
+        map.put("parentid", parentid);
+        return templateFromYaml("/api/update.yaml",map);
     }
 
     public Response delete(int id) {
-        reset();
-        return requestSpecification.
-                queryParam("id", id).
-                when().
-                get("https://qyapi.weixin.qq.com/cgi-bin/department/delete").
-                then().log().all().
-                extract().response();
+        HashMap<String, Object> map=new HashMap<String, Object>();
+        map.put("id", id);
+        return templateFromYaml("/api/delete.yaml",map);
     }
 }
